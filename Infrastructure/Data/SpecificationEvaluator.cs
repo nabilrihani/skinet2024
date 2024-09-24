@@ -25,6 +25,10 @@ public static IQueryable<T> GetQuery (IQueryable<T> query, ISpecification<T> spe
     {
         query=query.Distinct();
     }
+    if(spec.IsPagingEnabled)
+    {
+        query=query.Skip(spec.Skip).Take(spec.Take);
+    }
     return query;
 
 }
@@ -51,6 +55,10 @@ public static IQueryable<TResult> GetQuery<TSpec,TResult> (IQueryable<T> query,
      if(spec.IsDistinct)
     {
         selectQuery=selectQuery?.Distinct();
+    }
+    if(spec.IsPagingEnabled)
+    {
+        selectQuery=selectQuery?.Skip(spec.Skip).Take(spec.Take);
     }
     return selectQuery?? query.Cast<TResult>();
 
